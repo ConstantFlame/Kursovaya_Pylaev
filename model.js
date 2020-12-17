@@ -83,7 +83,7 @@ function modeling(programs, servers, n, m, time, L, Mu) { // Функция мо
     for (let j = 0; j < n; j++) { // Цикл по серварам
 
       while (programs[i].time > servers[j].t) { // Пока сервер свободен
-        if (boof.length > 0) { // Проверяем Если в буфере есть заявки, тогда обработаем для сначала их
+        if (boof.length > 0) { // Проверяем если в буфере есть заявки, тогда обработаем для сначала их
 
           // Ниже вычисляем время для вероятностей P0 - P7
           servers.sort((elem1, elem2) => elem1.t - elem2.t);

@@ -37,50 +37,50 @@ function checkDistribution() { // Функция для получения да�
 }
 
 function clickButton () { // Функция тапа по кнопке
-  const data = getData();
-  const method = checkDistribution();
+  const Data = getData();
+  const Method = checkDistribution();
 
-  if (!data.N || !data.timework) { // Проверка ввода необходимых данных
+  if (!Data.N || !Data.timework) { // Проверка ввода необходимых данных
     alert ('Проверьте поля N и время работы программы')
     return false;
   }
 
   let prog = [];
 
-  const elem = { // Объект с данными (нужны для вычислений характеристик по формулам)
-    n: data.N,
-    m: data.M
+  const Element = { // Объект с данными (нужны для вычислений характеристик по формулам)
+    n: Data.N,
+    m: Data.M
   }
 
-  if (method === 'line') { // При выборе экспоненциального или линейного закона распределения будут разные мю и лямбда
-    if (!data.TzMIN || !data.TzMAX || !data.TsMIN || !data.TsMAX) { // Проверка ввода необходимых данных
+  if (Method === 'line') { // При выборе экспоненциального или линейного закона распределения будут разные мю и лямбда
+    if (!Data.TzMIN || !Data.TzMAX || !Data.TsMIN || !Data.TsMAX) { // Проверка ввода необходимых данных
       alert ('Проверьте поля TzMIN, TzMAX, TsMIN, и TsMAX')
       return false;
     }
-    prog = calcProgramsLine(data.TzMIN, data.TzMAX, data.TsMIN, data.TsMAX, data.timework);
-    elem.l = Math.pow((data.TzMIN + data.TzMAX) / 2, -1);
-    elem.mu = Math.pow((data.TsMIN + data.TsMAX) / 2, -1);
+    prog = CalculateProgramLine(Data.TzMIN, Data.TzMAX, Data.TsMIN, Data.TsMAX, Data.timework);
+    Element.l = Math.pow((Data.TzMIN + Data.TzMAX) / 2, -1);
+    Element.mu = Math.pow((Data.TsMIN + Data.TsMAX) / 2, -1);
   } else {
-    if (!data.tobr || !data.lambda) { // Проверка ввода необходимых данных
+    if (!Data.tobr || !Data.lambda) { // Проверка ввода необходимых данных
       alert ('Проверьте поля λ и tобр')
       return false;
     }
-    prog = calcProgramsExp(data.lambda, data.Mu, data.timework);
-    elem.l = data.lambda;
-    elem.mu = data.Mu;
+    prog = CalculateProgramExp(Data.lambda, Data.Mu, Data.timework);
+    Element.l = Data.lambda;
+    Element.mu = Data.Mu;
   }
 
-  let servers = creatServers(data.N); // Создаем сервара
+  let servers = CreateServers(Data.N); // Создаем сервара
 
-  let conclusion = modeling(prog, servers, data.N, data.M, data.timework, elem.l, elem.mu); // Моделирование и расчет характеристик ВС
+  let conclusion = Modeling(prog, servers, Data.N, Data.M, Data.timework, Element.l, Element.mu); // Моделирование и расчет характеристик ВС
 
   // Если нужно посчитать хар-ки по формулам, то добавить вывод в интерфейс
-  // const parametrs = calcParameters(elem); //вычисление характеристик ВС по формулам
+  // const parametrs = CalculateParameters(Element); //вычисление характеристик ВС по формулам
 
   // let text = `\n\nХарактеристики ВС по формулам: ` + parametrs;
 
 
-  if (method === 'line') {
+  if (Method === 'line') {
     coclusionLine.textContent = conclusion; //Если понадобится расчет по формулам, то дабавляем + text после conclusion (текст в вывод)
   } else {
     conclusionExponential.textContent = conclusion;
@@ -95,6 +95,6 @@ function clickButton () { // Функция тапа по кнопке
 
 
 
-//console.log(calcParameters(linear));
-//console.log(calcProgramsExp(L, Mu, TIMEWORK));
+//console.log(CalculateParameters(linear));
+//console.log(CalculateProgramExp(L, Mu, TIMEWORK));
 
